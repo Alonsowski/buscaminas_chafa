@@ -56,7 +56,25 @@ namespace BuscaminasTPL
         }
         public void ShowValue(Button b, char value)
         {
+            casillasDescubiertas++;
+            int totalCasillas = num * num;
             b.Text = value.ToString();
+            if (value.ToString() == "*")
+            {
+                MessageBox.Show("Perdiste wey");
+                foreach (var btn in bmatriz)
+                {
+                    btn.Enabled = false;
+                }
+            }
+            else if (casillasDescubiertas == totalCasillas - totalMinas)
+            {
+                MessageBox.Show("Ganaste wey");
+                foreach (var btn in bmatriz)
+                {
+                    btn.Enabled = false;
+                }
+            }
         }
         public void findLimits(int i, int j, int num)
         {
@@ -89,11 +107,16 @@ namespace BuscaminasTPL
         public int[,] matriz;
         public Char[,] cmatriz;
         public Button[,] bmatriz;
+        int num;
+        public int totalMinas;
+        public int casillasDescubiertas;
         private async void btnGenerar_Click(object sender, EventArgs e)
         {
             panel1.Controls.Clear();
-            int num = int.Parse(this.textBox1.Text);
+            num = int.Parse(this.textBox1.Text);
             bmatriz = new Button[num, num];
+            totalMinas = 0;
+            casillasDescubiertas = 0;
             cmatriz = await Task.Run(() =>
                 {
                     padlock.EnterReadLock();
@@ -109,6 +132,7 @@ namespace BuscaminasTPL
                             if(r.Next(10) == 1)
                             {
                                 m[i, j] = '*';
+                                totalMinas++;
                             }
                         }
                     }
