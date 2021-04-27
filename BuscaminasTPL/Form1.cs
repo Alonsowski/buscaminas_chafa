@@ -47,6 +47,7 @@ namespace BuscaminasTPL
                             ShowValue(btn, mn);
                     };
                     panel1.Controls.Add(btn);
+
                     mh += 24;
                     bmatriz[i, j] = btn;
                 }
